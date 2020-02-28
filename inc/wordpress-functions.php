@@ -2,20 +2,14 @@
 
 /*
  * Kod źródłowy chroniony prawem autorskim.
+ * Licencja GNU Lesser General Public License v3
  * Autor Daniel Bośnjak
- * Pliki ładowane przez WPCMS udostępnione są na licencji OpenSource v3.0
  */
 
-/**
- * Bez warunkowo wyświetl błąd 404 - funkcja musi być wywołana przed get_header
- * 
- * @global WP_Query $wp_query
- * @param string $cust_message
- * @param string $cust_title
- */
 
- 
-function is_crawler() {
+
+function is_crawler()
+{
     $ar = array('arachnoidea', 'googlebot', 'msn', 'gulper', 'zyborg', 'cyveillance');
     foreach ($ar as $crawl)
         if (strstr(strtolower($_SERVER['HTTP_USER_AGENT']), $crawl) !== false) {
@@ -24,21 +18,35 @@ function is_crawler() {
         }
     return false;
 }
-
-function is_ajax() {
-    return wp_doing_ajax() or (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+/**
+ * Check if current request is made by AJAX.
+ *
+ * @return boolean
+ */
+if (!function_exists('is_ajax')) :
+    function is_ajax()
+    {
+        return wp_doing_ajax() or (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
             ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'));
-}
-
-function go404($cust_message = false, $cust_title = false) {
+    }
+endif;
+/**
+ * Display 404 page, you must call this in template_redirect or earlier. In other case it wont work and rise errors.
+ * 
+ * @global WP_Query $wp_query
+ * @param string $cust_message
+ * @param string $cust_title
+ */
+function go404($cust_message = false, $cust_title = false)
+{
     global $wp_query;
     $wp_query->set_404();
     status_header(404);
-    get_template_part('404');
-    exit();
+    //get_template_part('404');
 }
 
-function get_post_terms_assoc($post_id, $taxonomy, $field = 'name') {
+function get_post_terms_assoc($post_id, $taxonomy, $field = 'name')
+{
     $args['fileds'] = 'all';
     $terms = wp_get_post_terms($post_id, $taxonomy, $args);
     foreach ($terms as $t) {
@@ -48,27 +56,8 @@ function get_post_terms_assoc($post_id, $taxonomy, $field = 'name') {
     return $ret;
 }
 
-/**
- * 
- * @param int $post_id
- * @return int ID autora
- */
-function get_post_author($post_id, $object = false) {
-    //cache
-    $listing = get_post((int) $post_id);
-    if (!$listing)
-        return false;
-
-    $author_id = $listing->post_author;
-
-    if ($object) {
-        return get_userdata($author_id);
-    }
-
-    return $author_id;
-}
-
-function get_taxonomy_tree($args = array(), $taxonomy, $simple = 0) {
+function get_taxonomy_tree($args = array(), $taxonomy, $simple = 0)
+{
     $args = array_merge($args, array('hide_empty' => 0, 'title_li' => false, 'hierarchical' => 1));
     $cats = get_terms($taxonomy, $args);
 
@@ -91,49 +80,8 @@ function get_taxonomy_tree($args = array(), $taxonomy, $simple = 0) {
     return $ret;
 }
 
-function list_hooked_functions($tag = false) {
-    global $wp_filter;
-    if ($tag) {
-        $hook[$tag] = $wp_filter[$tag];
-        if (!is_array($hook[$tag])) {
-            trigger_error("Nothing found for '$tag' hook", E_USER_WARNING);
-            return;
-        }
-    } else {
-        $hook = $wp_filter;
-        ksort($hook);
-    }
-    echo '<pre>';
-    foreach ($hook as $tag => $priority) {
-        echo "<br />&gt;&gt;&gt;&gt;&gt;\t<strong>$tag</strong><br />";
-        ksort($priority);
-        foreach ($priority as $priority => $function) {
-            echo $priority;
-            foreach ($function as $name => $properties)
-                echo "\t$name<br />";
-        }
-    }
-    echo '</pre>';
-    return;
-}
 
-/*
- * Get top parent
- */
 
-function get_root_category($category_id = '') {
-    //cache
-    $cid = wp_cache_get('catid_top_' . $category_id, 'efait_');
-    if ($cid === false) {
-        if (is_category($category_id)) {
-            $parent_cats = get_category_parents($category_id);
-            $split_arr = explode('/', $parent_cats);
-            $cid = get_cat_id($split_arr[0]);
-            wp_cache_set('catid_top_' . $category_id, $cid, 'efait_' );
-        }
-    }
-    return $cid;
-}
 
 /**
  * 
@@ -141,17 +89,18 @@ function get_root_category($category_id = '') {
  * @param string $taxonomy
  * @return int ID of root category
  */
-function get_root_term($catid, $taxonomy = 'category', $type = 'ID') {
-//cache
-    if (is_object($catid)) {
-        if ($catid->parent == 0)
-            $term = $catid;
+function get_root_term($term_id, $taxonomy = 'category', $type = 'ID')
+{
+    //cache
+    if (is_object($term_id)) {
+        if ($term_id->parent == 0)
+            $term = $term_id;
         else {
-            $parent = $catid->parent;
-            $catid = $catid->term_id;
+            $parent = $term_id->parent;
+            $catid = $term_id->term_id;
         }
     } else {
-        $parent = $catid;
+        $parent =  $catid = $term_id;
     }
 
     if (empty($term)) {
@@ -163,7 +112,7 @@ function get_root_term($catid, $taxonomy = 'category', $type = 'ID') {
                 $catid = $term->term_id;
                 $parent = $term->parent;
 
-// the while loop will continue whilst there is a $catid
+                // the while loop will continue whilst there is a $catid
                 // when there is no longer a parent $catid will be NULL so we can assign our $catParent
             }
             wp_cache_set($cacheId, $term, 'efait_');
@@ -172,45 +121,6 @@ function get_root_term($catid, $taxonomy = 'category', $type = 'ID') {
     return $type == 'ID' ? $term->term_id : $term;
 }
 
-/**
- * Get data about top term of selected taxonomy for post.
- * @param $post_id int
- * @param $taxonomy string = valid taxonomy
- * 
- * @return mixed
- */
-function get_post_root_term($post_id, $taxonomy = 'category', $type = 'ID') {
-    // global $post;
-    if (is_object($post_id)) {
-        $post_id = $post_id->ID;
-    }
-    $single = false;
-    $term = wp_cache_get('catid_top_' . $taxonomy . '_' . $post_id, 'efait_');
-
-    if ($term == false) {
-        $terms = wp_get_post_terms($post_id, $taxonomy);
-       
-        foreach ($terms as $aterm) {
-            if ($aterm->parent == 0 && $aterm->term_id != 1) {
-                $term[] = $aterm;
-                if (in_array($type, ['ID', 'single'])) {
-                    $single = true;
-                    break;
-                }
-            }
-        }
-
-        if (!$term) {
-            $term = get_root_term($terms[0], $taxonomy, $type);
-        }
-        wp_cache_set('catid_top_' . $taxonomy . '_' . $post_id, $term, 'efait_');
-    }
-
-    if ($single)
-        return $type == 'ID' ? $term[0]->term_id : $term[0];
-    else
-        return $term;
-}
 
 /**
  * Link do strony autora 
@@ -219,46 +129,62 @@ function get_post_root_term($post_id, $taxonomy = 'category', $type = 'ID') {
  * @param string $class Klasy CSS do wstawienia w linku
  * @return type
  */
-function get_the_author_name_linked($author_id, $class = '') {
+function get_the_author_name_linked($author_id = 0, $class = '')
+{
+    global $post;
+    $author_id = $author_id === 0 ? $post->post_author : 0;
+    if ($author_id == 0) return '';
     return '<a href="' . get_author_posts_url($author_id) . '" class="' . $class . '" >' . get_the_author_meta('display_name', $author_id) . '</a>';
 }
 
 
 /**
- * Sprawdza czy jesteśmy na stronie logowania domyślnej dla wordpressa.
+ * Check if currently page is login page. Works with default wordpress login screen, woocommerce and others if using login_page hook.
  * @return bool
  */
-function is_login() {
-    return in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'));
+function is_login()
+{
+    if (!class_exists('WC')) {
+        $result = is_account_page() && !is_user_logged_in();
+    } else {
+        $result = in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'));
+    }
+
+    return apply_filters('login_page', $result);
 }
 
 /**
- *  Liczenie wskazanych postów od opcjonalnie wskazanej daty
+ * Count users posts by supplied type and in supplied date rande..
  * 
  * @param int $userid
- * @param string $post_type 
+ * @param mixed $post_type 
  * @param time $date
  * 
  * @return int post count
  */
-function count_user_posts_by_type($userid, $post_type = 'post', $date = false) {
+function count_user_posts_by_type($author_id, $post_type = 'post', $date_from = false, $date_to = false)
+{
     global $wpdb;
 
-    $where = get_posts_by_author_sql($post_type, true, $userid);
-    if ($date)
-        $where .= " AND  DATE(post_date) >= '$date'";
+    $where = get_posts_by_author_sql($post_type, true, $author_id);
+    if ($date_to)
+        $where .= " AND  DATE(post_date) >= '$date_to'";
+    if ($date_from)
+        $where .= " AND  DATE(post_date) <= '$date_from'";
+
     $count = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts $where");
 
-    return apply_filters('get_usernumposts', $count, $userid);
+    return apply_filters('get_usernumposts', $count, $author_id);
 }
 
 /**
- * pobranie listy ID kategorii gdzie autor ma produkty. funkcja krytycznie pobiera zasoby. Możliwe ogromne zapytania.
+ * Get user categories where he get published content. Resource hungry, should be queued - uses transients.
  * 
  * @param in $author_id
  * @return string[] ids comma separeted
  */
-function user_post_categories($author_id, $post_type = 'product', $tax = 'product_cat') {
+function user_post_categories($author_id, $post_type = 'product', $tax = 'product_cat')
+{
     $cacheId = 'user_cats_' . $author_id;
     return;
     if (!$user_cats = wp_cache_get($cacheId)) {
@@ -273,38 +199,18 @@ function user_post_categories($author_id, $post_type = 'product', $tax = 'produc
     return $user_cats;
 }
 
-/**
- * Funkcja pobiera post po tytule
- * 
- * @global std $wpdb
- * @param string $page_title
- * @param string $post_type
- * @param constans $output OBJECT, ARRAY, ID
- * @return mixed bool,object[] 
- */
-function get_post_by_title($page_title, $post_type = 'coupon', $output = OBJECT, $author = '') {
-    global $wpdb;
-    $add = '';
-    if ($author)
-        $add = 'AND post_author = ' . (int) $author;
-    $post = $wpdb->get_var($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type='$post_type' $add", $page_title));
-    if ($output == 'ID')
-        return $post;
-    if ($post)
-        return get_post($post, $output);
 
-    return false;
-}
 
 /**
- * funkcja pobiera link do wskazanego Sluga. Pobiera poprzez oszczędne zapytanie
+ * Get object link by slug
  * @global std $wpdb
  * @param string $page_slug
  * @param constans $output
  * @param string $post_type
  * @return string
  */
-function get_page_link_by_slug($page_slug, $output = OBJECT, $post_type = 'page') {
+function get_object_link_by_slug($page_slug, $post_type = 'page', $output = OBJECT)
+{
     global $wpdb;
     $page = $wpdb->get_var($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type= %s AND post_status = 'publish'", $page_slug, $post_type));
     if ($page)
@@ -313,13 +219,97 @@ function get_page_link_by_slug($page_slug, $output = OBJECT, $post_type = 'page'
 }
 
 
+/**
+ * Create tmp dir, and if need underneath folder structer
+ *
+ * @param string $dir no traling slash
+ * @return string full path
+ */
+function wp_tmp_dir($dir = '')
+{
 
-function top_term_link($class = '', $taxonomy = 'category') {
-    global $post;
-    $term = get_post_root_term($post->ID, $taxonomy, 'name');
-    if ($term instanceof WP_Term)
-        printf('<a href="%s" title="%s" $class="%s">%s</a>', get_term_link($term), $term->description, $class, $term->name);
+    $uploads = wp_get_upload_dir();
+    $path =   $uploads['basedir'] . '/tmp' . ($dir ? '/' . $dir : '');
+    if (!is_dir($path))
+        mkdir($path, 0775, true);
+
+    return $path . '/';
+}
+function wp_date_localised($format, $timestamp = null)
+{
+    // This function behaves a bit like PHP's Date() function, but taking into account the Wordpress site's timezone
+    // CAUTION: It will throw an exception when it receives invalid input - please catch it accordingly
+    // From https://mediarealm.com.au/
+
+    $tz_string = get_option('timezone_string');
+    $tz_offset = get_option('gmt_offset', 0);
+
+    if (!empty($tz_string)) {
+        // If site timezone option string exists, use it
+        $timezone = $tz_string;
+    } elseif ($tz_offset == 0) {
+        // get UTC offset, if it isn’t set then return UTC
+        $timezone = 'UTC';
+    } else {
+        $timezone = $tz_offset;
+
+        if (substr($tz_offset, 0, 1) != "-" && substr($tz_offset, 0, 1) != "+" && substr($tz_offset, 0, 1) != "U") {
+            $timezone = "+" . $tz_offset;
+        }
+    }
+
+    if ($timestamp === null) {
+        $timestamp = time();
+    }
+
+    $datetime = new DateTime();
+    $datetime->setTimestamp($timestamp);
+    $datetime->setTimezone(new DateTimeZone($timezone));
+    return $datetime->format($format);
 }
 
+/**
+ * Strtotime with localised outbput by taking into account the Wordpress site's timezone. 
+ * Throws InvalidDateString on wrong input
+ * @param [type] $str
+ * @return void
+ */
+function wp_strtotime($str)
+{
 
+    $tz_string = get_option('timezone_string');
+    $tz_offset = get_option('gmt_offset', 0);
 
+    if (!empty($tz_string)) {
+        // If site timezone option string exists, use it
+        $timezone = $tz_string;
+    } elseif ($tz_offset == 0) {
+        // get UTC offset, if it isn’t set then return UTC
+        $timezone = 'UTC';
+    } else {
+        $timezone = $tz_offset;
+
+        if (substr($tz_offset, 0, 1) != "-" && substr($tz_offset, 0, 1) != "+" && substr($tz_offset, 0, 1) != "U") {
+            $timezone = "+" . $tz_offset;
+        }
+    }
+    $datetime = new DateTime($str, new DateTimeZone($timezone));
+    return $datetime->format('U');
+}
+/**
+ * Undocumented function
+ *
+ * @param [int/object WP_User] $id_or_object
+ * @return void
+ */
+function get_user_roles(&$id_or_object)
+{
+    global $wp_roles;
+    if ($id_or_object instanceof \WP_User) {
+        $user = $id_or_object;
+    } else {
+        $user = get_userdata($id);
+    }
+    foreach ($user->roles as $role)
+        yield $wp_roles->roles[$role];
+}
