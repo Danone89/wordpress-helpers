@@ -7,7 +7,7 @@
  * @copyright Copyright (C) 2006-2009 Tony Landis
  * @license http://www.opensource.org/licenses/bsd-license.php
  */
-namespace Wordpress_helpers\classes\TextPrinter;
+namespace Wordpress_helpers\classes\text_printer\TextPrinter;
 
 class Array_To_Text_Table
 {

@@ -1,0 +1,15 @@
+composer.lock
+vendor/10up/
+vendor/antecedent/
+vendor/bin/
+vendor/doctrine/
+vendor/hamcrest/
+vendor/kylekatarnls/
+vendor/mockery/
+vendor/myclabs/
+vendor/phpunit/
+vendor/symfony/
+vendor/webmozart/
+vendor/sebastian/
+vendor/phpspec/
+vendor/phpdocumentor/
