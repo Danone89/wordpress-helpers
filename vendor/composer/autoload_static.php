@@ -7,13 +7,22 @@ namespace Composer\Autoload;
 class ComposerStaticInite75425d2bf12f9dd89a69af7290875d6
 {
     public static $files = array (
-        '6a8bdf3c62f8e62a6d0ed70d73d059ac' => __DIR__ . '/../..' . '/inc/wordpress-queue.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '186f518071fba38576ac4497f12487a0' => __DIR__ . '/../..' . '/inc/wordpress-queue.php',
+        'c0633d0d01056bdd7d22b828728e1447' => __DIR__ . '/../..' . '/inc/wordpress-functions.php',
+        'f6292fa29156f2509b82d05755fbbcb2' => __DIR__ . '/../..' . '/inc/woocommerce-functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'W' => 
         array (
             'WP_Queue\\' => 9,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Contracts\\Translation\\' => 30,
+            'Symfony\\Component\\Translation\\' => 30,
         ),
     );
 
@@ -22,6 +31,32 @@ class ComposerStaticInite75425d2bf12f9dd89a69af7290875d6
         array (
             0 => __DIR__ . '/..' . '/WP_Queue',
         ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Contracts\\Translation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/translation-contracts',
+        ),
+        'Symfony\\Component\\Translation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/translation',
+        ),
+    );
+
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/..' . '/nesbot/carbon/src',
+    );
+
+    public static $prefixesPsr0 = array (
+        'U' => 
+        array (
+            'UpdateHelper\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/kylekatarnls/update-helper/src',
+            ),
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -29,6 +64,8 @@ class ComposerStaticInite75425d2bf12f9dd89a69af7290875d6
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInite75425d2bf12f9dd89a69af7290875d6::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInite75425d2bf12f9dd89a69af7290875d6::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInite75425d2bf12f9dd89a69af7290875d6::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInite75425d2bf12f9dd89a69af7290875d6::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

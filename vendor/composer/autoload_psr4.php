@@ -7,4 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'WP_Queue\\' => array($vendorDir . '/WP_Queue'),
+    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
+    'Symfony\\Contracts\\Translation\\' => array($vendorDir . '/symfony/translation-contracts'),
+    'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
+    '' => array($vendorDir . '/nesbot/carbon/src'),
 );
