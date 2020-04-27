@@ -1,12 +1,12 @@
 {
-    "name": "a5hleyrich/wp-queue",
-    "description": "WordPress job queues",
+    "name": "danone89/wp-helpers",
+    "description": "WordPress helpers set",
     "keywords": ["wordpress","queue","job"],
-    "license": "MIT",
+    "license": "GNU GPLv3",
     "authors": [
         {
-            "name": "Ashley Rich",
-            "email": "hello@ashleyrich.com"
+            "name": "Daniel Bośnjak",
+            "email": "daniel@pikselownia.com"
         }
     ],
     "require": {
@@ -14,7 +14,11 @@
         "nesbot/carbon": "^1.22"
     },
     "autoload": {
+        "psr-4": {
 
+            "WP_Queue\\": "vendor\\WP_Queue"
+
+        },
         "files": [
             "inc/wordpress-queue.php",
             "inc/wordpress-functions.php",

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordpress_helpers\classes\TextPrinter;
+namespace Wordpress_helpers\classes\text_printer;
 
 
 class Text_Print{
