@@ -14,11 +14,12 @@
         "nesbot/carbon": "^1.22"
     },
     "autoload": {
-        "psr-4": {
-            "WP_Queue\\": "src\\WP_Queue"
-        },
+
         "files": [
-            "inc/wordpress-queue.php"
+            "inc/wordpress-queue.php",
+            "inc/wordpress-functions.php",
+            "inc/woocommerce-functions.php"
+
         ]
     },
     "require-dev": {

@@ -1,5 +1,7 @@
 <?php
 
+use Wordpress_helpers\classes\pods\Pods_Helper;
+
 remove_filter('the_content', 'wpautop');
 add_action('plugins_loaded', function () {
     Datatables::init(self::$plugin_dir);

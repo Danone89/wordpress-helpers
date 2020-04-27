@@ -38,8 +38,6 @@ if (!defined('ABSPATH')) {
 }
 
 require_once trailingslashit(__DIR__) . 'inc/autoloader.php';
-require_once trailingslashit(__DIR__) . 'inc/wordpress-functions.php';
-require_once trailingslashit(__DIR__) . 'inc/woocommerce-functions.php';
 
 register_activation_hook(__FILE__, function () {
   if (class_exists('WP_Queue'))

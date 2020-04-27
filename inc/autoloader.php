@@ -1,4 +1,6 @@
 <?php
+require '../vendor/autoload.php';
+
 spl_autoload_register(function ($class_name) {
     // If the specified $class_name does not include our namespace, duck out.
     if (false === strpos($class_name, 'Wordpress_helpers')) {
