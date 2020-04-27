@@ -1,13 +1,21 @@
 <?php
 
 /*
-  Plugin Name: Runtime Libraries
-  Plugin URI: https://pikselownia.com/
-  Description: Execution envairoment for pikselownia.com plugins and themes.
-  Version: 2.0
-  Author: Daniel Bośnjak
-  Author URI: https://pikselownia.com/
-
+ * @package           wordpress-helpers
+ * @author            Daniel Bosnjak
+ * @copyright         2019 Pikselownia
+ * @license           GPL-2.0-or-later
+ * 
+ * @wordpress-plugin
+ * Plugin Name: Wordpress Helpers
+ * Plugin URI: https://pikselownia.com/
+ * Text Domain: wp-helpers
+ * Version: 2.0
+ * Description: Collection of classes for working with common dev tasks in wordpress. Provides unification for your plugin and themes.
+ * Simplifies working with Woocomerce, Wordpress, JetPack, TGMPA, settings 
+ * 
+*/
+/*
   Copyright 2020  Daniel Bośnjak
 
   This program is free software; you can redistribute it and/or
@@ -25,7 +33,17 @@
  */
 
 
-require_once trailingslashit(__DIR__).'inc/autoloader.php';
-require_once trailingslashit(__DIR__).'inc/general-functions.php';
-require_once trailingslashit(__DIR__).'inc/wordpress-functions.php';
-require_once trailingslashit(__DIR__).'inc/woocommerce-functions.php';
+if (!defined('ABSPATH')) {
+  die('Error #1 - file should be loaded by wordpress core');
+}
+
+require_once trailingslashit(__DIR__) . 'inc/autoloader.php';
+require_once trailingslashit(__DIR__) . 'inc/wordpress-functions.php';
+require_once trailingslashit(__DIR__) . 'inc/woocommerce-functions.php';
+
+register_activation_hook(__FILE__, function () {
+  if (class_exists('WP_Queue'))
+    wp_queue_install_tables();
+});
+
+//facade mail, queue, pods, 

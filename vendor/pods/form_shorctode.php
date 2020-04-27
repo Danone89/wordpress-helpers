@@ -2,11 +2,11 @@
 
 namespace wordpress_helpers\modules\pods;
 
-
+use wordpress_helpers\classes\WP_Singleton;
 
 class Pods_Form_shortcode
 {
-
+    use WP_Singleton;
     static $TAG = 'pix_form';
     /**
      * Register form shortcode with $tag name.
@@ -14,7 +14,7 @@ class Pods_Form_shortcode
      * @param string $tag
      * @return void
      */
-    static function register($tag = 'pix_form')
+    protected function init($tag = 'pix_form')
     {
         self::$TAG = $tag;
         add_shortcode($tag, [__NAMESPACE__ . '\\Pods_Form_shortcode', 'pix_form_handler']);

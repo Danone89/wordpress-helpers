@@ -1,9 +1,9 @@
 <?php
 
-namespace pix\helpers\TextPrinter;
+namespace Wordpress_helpers\classes\TextPrinter;
 
 
-class TextPrint{
+class Text_Print{
 
     /**
      * Print width

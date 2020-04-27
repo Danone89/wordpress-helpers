@@ -6,14 +6,14 @@
  * and open the template in the editor.
  */
 
-namespace Pikselownia_lib\classes\helpers;
+namespace Wordpress_helpers\classes\content;
 
 /**
  * Description of PixText
  *
  * @author Daniel
  */
-final class Pix_Text
+final class Text
 {
     const loremIpsum = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean accumsan, tellus sit amet aliquam placerat.
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean accumsan, tellus sit amet aliquam placerat.
@@ -28,7 +28,22 @@ final class Pix_Text
         }
         return $lorem;
     }
+    /**
+     * Default add noopener and nofollow
+     *
+     * @param [type] $content
+     * @param array $args noopener => (bool), nofollow => (bool)
+     * @return void
+     */
+    static function add_rels($content,$args = []){
 
+
+    }
+
+    static function add_noopener($content, $skip = '')
+    {
+
+    }
     static function add_no_follow($content, $skip = '')
     {
 

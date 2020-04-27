@@ -1,0 +1,29 @@
+{
+  "name": "bs-webapi",
+  "version": "1.0.0",
+  "description": "WebApi access plugin",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "author": "Daniel Bosnjak",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-loader": "^8.1.0",
+    "lodash": "^4.17.15",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "watch": "webpack --mode=development --watch --config webpack-config.js",
+    "build": "webpack --mode=production --config webpack-config.js"
+  }
+}

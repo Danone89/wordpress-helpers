@@ -5,8 +5,52 @@
  * Licencja GNU Lesser General Public License v3
  * Autor Daniel Bośnjak
  */
+namespace Wordpress_helpers;
 
+use DateTime;
+use DateTimeZone;
 
+/**
+ * Returns what type of view is currently displayed
+ *
+ * @return string view type
+ */
+function loop_type() {
+    global $wp_query;
+    $loop = 'notfound';
+
+    if ( $wp_query->is_page ) {
+        $loop = is_front_page() ? 'front' : 'page';
+    } elseif ( $wp_query->is_home ) {
+        $loop = 'home';
+    } elseif ( $wp_query->is_single ) {
+        $loop = ( $wp_query->is_attachment ) ? 'attachment' : 'single';
+    } elseif ( $wp_query->is_category ) {
+        $loop = 'category';
+    } elseif ( $wp_query->is_tag ) {
+        $loop = 'tag';
+    } elseif ( $wp_query->is_tax ) {
+        $loop = 'tax';
+    } elseif ( $wp_query->is_archive ) {
+        if ( $wp_query->is_day ) {
+            $loop = 'day';
+        } elseif ( $wp_query->is_month ) {
+            $loop = 'month';
+        } elseif ( $wp_query->is_year ) {
+            $loop = 'year';
+        } elseif ( $wp_query->is_author ) {
+            $loop = 'author';
+        } else {
+            $loop = 'archive';
+        }
+    } elseif ( $wp_query->is_search ) {
+        $loop = 'search';
+    } elseif ( $wp_query->is_404 ) {
+        $loop = 'notfound';
+    }
+
+    return $loop;
+}
 
 function is_crawler()
 {
@@ -37,7 +81,7 @@ endif;
  * @param string $cust_message
  * @param string $cust_title
  */
-function go404($cust_message = false, $cust_title = false)
+function go_404($cust_message = false, $cust_title = false)
 {
     global $wp_query;
     $wp_query->set_404();
@@ -144,7 +188,7 @@ function get_the_author_name_linked($author_id = 0, $class = '')
  */
 function is_login()
 {
-    if (!class_exists('WC')) {
+    if (class_exists('WC')) {
         $result = is_account_page() && !is_user_logged_in();
     } else {
         $result = in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'));
@@ -222,19 +266,28 @@ function get_object_link_by_slug($page_slug, $post_type = 'page', $output = OBJE
 /**
  * Create tmp dir, and if need underneath folder structer
  *
- * @param string $dir no traling slash
+ * @param string $directory to create no traling slash
  * @return string full path
  */
-function wp_tmp_dir($dir = '')
+function wp_tmp_dir($directory = '')
 {
 
     $uploads = wp_get_upload_dir();
-    $path =   $uploads['basedir'] . '/tmp' . ($dir ? '/' . $dir : '');
+    $path =   $uploads['basedir'] . '/tmp' . ($directory ? '/' . $directory : '');
     if (!is_dir($path))
         mkdir($path, 0775, true);
 
     return $path . '/';
 }
+
+
+/**
+ * Localized date function for WP
+ *
+ * @param string $format same as date()
+ * @param time $timestamp - defaults to time
+ * @return void
+ */
 function wp_date_localised($format, $timestamp = null)
 {
     // This function behaves a bit like PHP's Date() function, but taking into account the Wordpress site's timezone
@@ -269,13 +322,16 @@ function wp_date_localised($format, $timestamp = null)
 }
 
 /**
- * Strtotime with localised outbput by taking into account the Wordpress site's timezone. 
- * Throws InvalidDateString on wrong input
- * @param [type] $str
+ * Strototime respects wordpress timezone.
+ *
+ * @param string $str valid time string
  * @return void
  */
 function wp_strtotime($str)
 {
+    // This function behaves a bit like PHP's StrToTime() function, but taking into account the Wordpress site's timezone
+    // CAUTION: It will throw an exception when it receives invalid input - please catch it accordingly
+    // From https://mediarealm.com.au/
 
     $tz_string = get_option('timezone_string');
     $tz_offset = get_option('gmt_offset', 0);
@@ -293,14 +349,17 @@ function wp_strtotime($str)
             $timezone = "+" . $tz_offset;
         }
     }
+
     $datetime = new DateTime($str, new DateTimeZone($timezone));
     return $datetime->format('U');
 }
+
+
 /**
- * Undocumented function
+ * Creates generator returning user roles 
  *
  * @param [int/object WP_User] $id_or_object
- * @return void
+ * @return generator user roles
  */
 function get_user_roles(&$id_or_object)
 {
@@ -308,8 +367,26 @@ function get_user_roles(&$id_or_object)
     if ($id_or_object instanceof \WP_User) {
         $user = $id_or_object;
     } else {
-        $user = get_userdata($id);
+        $user = get_userdata($id_or_object);
     }
-    foreach ($user->roles as $role)
-        yield $wp_roles->roles[$role];
+    if (!empty($user->roles)) {
+        foreach ($user->roles as $role)
+            yield $wp_roles->roles[$role];
+    } else {
+        return [];
+    }
 }
+
+/**
+ * Helper function for get_user_role, 
+ *
+ * @return generator current user roles
+ */
+function get_current_user_roles()
+{
+    global $current_user, $wp_roles;
+    if (!is_user_logged_in()) return [];
+    yield get_user_roles($current_user);
+}
+
+
