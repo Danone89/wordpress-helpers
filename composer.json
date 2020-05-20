@@ -11,16 +11,11 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "nesbot/carbon": "^1.22"
+        "nesbot/carbon": "^1.22",
+        "woocommerce/action-scheduler": "^3.1"
     },
     "autoload": {
-        "psr-4": {
-
-            "WP_Queue\\": "vendor\\WP_Queue"
-
-        },
         "files": [
-            "inc/wordpress-queue.php",
             "inc/wordpress-functions.php",
             "inc/woocommerce-functions.php"
 

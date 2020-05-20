@@ -11,7 +11,6 @@ class ComposerStaticInite75425d2bf12f9dd89a69af7290875d6
         '1d1b89d124cc9cb8219922c9d5569199' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
-        '186f518071fba38576ac4497f12487a0' => __DIR__ . '/../..' . '/inc/wordpress-queue.php',
         'c0633d0d01056bdd7d22b828728e1447' => __DIR__ . '/../..' . '/inc/wordpress-functions.php',
         'f6292fa29156f2509b82d05755fbbcb2' => __DIR__ . '/../..' . '/inc/woocommerce-functions.php',
     );
@@ -24,7 +23,6 @@ class ComposerStaticInite75425d2bf12f9dd89a69af7290875d6
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
-            'WP_Queue\\' => 9,
             'WP_Mock\\' => 8,
         ),
         'S' => 
@@ -56,10 +54,6 @@ class ComposerStaticInite75425d2bf12f9dd89a69af7290875d6
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
-        ),
-        'WP_Queue\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/WP_Queue',
         ),
         'WP_Mock\\' => 
         array (

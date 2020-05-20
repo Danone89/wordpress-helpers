@@ -11,7 +11,7 @@
  * Plugin URI: https://pikselownia.com/
  * Text Domain: wp-helpers
  * Version: 2.0
- * Description: Collection of classes for working with common dev tasks in wordpress. Provides unification for your plugin and themes.
+ * Description: Collection of classes for working with common  tasks in wordpress. Provides unification base for your plugin and themes.
  * Simplifies working with Woocomerce, Wordpress, JetPack, TGMPA, settings 
  * 
 */
@@ -40,8 +40,9 @@ if (!defined('ABSPATH')) {
 require_once trailingslashit(__DIR__) . 'inc/autoloader.php';
 
 register_activation_hook(__FILE__, function () {
-  if (class_exists('WP_Queue'))
-    wp_queue_install_tables();
+});
+
+reguster_deactivation_hook(__FILE__,function(){
 });
 
 //facade mail, queue, pods, 

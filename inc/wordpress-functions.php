@@ -373,7 +373,7 @@ function get_user_roles(&$id_or_object)
         foreach ($user->roles as $role)
             yield $wp_roles->roles[$role];
     } else {
-        return [];
+        yield [];
     }
 }
 
@@ -385,8 +385,14 @@ function get_user_roles(&$id_or_object)
 function get_current_user_roles()
 {
     global $current_user, $wp_roles;
-    if (!is_user_logged_in()) return [];
+    if (!is_user_logged_in()) yield [];
     yield get_user_roles($current_user);
 }
 
 
+if(!function_exists('log')){
+
+    function log($message,$level = 'info'){
+        file_put_contents('log.txt',sprintf('%s - %s %s'.PHP_EOL,date('Y-m-d H:i:s'),$level,$message),FILE_APPEND);
+    }
+}

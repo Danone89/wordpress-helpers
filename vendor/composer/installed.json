@@ -1698,17 +1698,17 @@
     },
     {
         "name": "symfony/translation",
-        "version": "v4.4.7",
-        "version_normalized": "4.4.7.0",
+        "version": "v4.4.8",
+        "version_normalized": "4.4.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation.git",
-            "reference": "4e54d336f2eca5facad449d0b0118bb449375b76"
+            "reference": "8272bbd2b7e220ef812eba2a2b30068a5c64b191"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/4e54d336f2eca5facad449d0b0118bb449375b76",
-            "reference": "4e54d336f2eca5facad449d0b0118bb449375b76",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/8272bbd2b7e220ef812eba2a2b30068a5c64b191",
+            "reference": "8272bbd2b7e220ef812eba2a2b30068a5c64b191",
             "shasum": ""
         },
         "require": {
@@ -1741,7 +1741,7 @@
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2020-03-27T16:54:36+00:00",
+        "time": "2020-04-12T16:45:36+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1835,17 +1835,17 @@
     },
     {
         "name": "symfony/yaml",
-        "version": "v4.4.7",
-        "version_normalized": "4.4.7.0",
+        "version": "v4.4.8",
+        "version_normalized": "4.4.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/yaml.git",
-            "reference": "ef166890d821518106da3560086bfcbeb4fadfec"
+            "reference": "b385dce1c0e9f839b384af90188638819433e252"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/yaml/zipball/ef166890d821518106da3560086bfcbeb4fadfec",
-            "reference": "ef166890d821518106da3560086bfcbeb4fadfec",
+            "url": "https://api.github.com/repos/symfony/yaml/zipball/b385dce1c0e9f839b384af90188638819433e252",
+            "reference": "b385dce1c0e9f839b384af90188638819433e252",
             "shasum": ""
         },
         "require": {
@@ -1861,7 +1861,7 @@
         "suggest": {
             "symfony/console": "For validating YAML files using the lint command"
         },
-        "time": "2020-03-30T11:41:10+00:00",
+        "time": "2020-04-28T17:55:16+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1943,5 +1943,42 @@
             "check",
             "validate"
         ]
+    },
+    {
+        "name": "woocommerce/action-scheduler",
+        "version": "3.1.5",
+        "version_normalized": "3.1.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/woocommerce/action-scheduler.git",
+            "reference": "84e8ecba7d4f542f85fae7663e90eede1858b41b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/woocommerce/action-scheduler/zipball/84e8ecba7d4f542f85fae7663e90eede1858b41b",
+            "reference": "84e8ecba7d4f542f85fae7663e90eede1858b41b",
+            "shasum": ""
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^5.6",
+            "woocommerce/woocommerce-sniffs": "0.0.8",
+            "wp-cli/wp-cli": "~1.5.1"
+        },
+        "time": "2020-04-29T16:19:22+00:00",
+        "type": "wordpress-plugin",
+        "extra": {
+            "scripts-description": {
+                "test": "Run unit tests",
+                "phpcs": "Analyze code against the WordPress coding standards with PHP_CodeSniffer",
+                "phpcbf": "Fix coding standards warnings/errors automatically with PHP Code Beautifier"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0-or-later"
+        ],
+        "description": "Action Scheduler for WordPress and WooCommerce",
+        "homepage": "https://actionscheduler.org/"
     }
 ]
